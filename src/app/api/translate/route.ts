@@ -55,8 +55,8 @@ export async function POST(req: NextRequest) {
       message: "PDF traducido con éxito",
       translatedUrl: `/uploads/${translatedFileName}`,
     });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Error al traducir el PDF" }, { status: 500 });
-  }
+  } catch (err: any) {
+  console.error("❌ Error en traducción:", err.message);
+  return NextResponse.json({ error: "Error al traducir el PDF", details: err.message }, { status: 500 });
+}
 }
