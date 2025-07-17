@@ -13,6 +13,9 @@ pnpm dev
 # or
 bun dev
 ```
+Second, in this project we use credentials from google, so you'll need install this dependency
+
+npm install --save @google-cloud/translate
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

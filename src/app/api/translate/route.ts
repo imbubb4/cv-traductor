@@ -4,6 +4,10 @@ import path from "path";
 import pdfParse from "pdf-parse";
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { default as translate } from "google-translate-open-api";
+import { Translate } from "@google-cloud/translate/build/src/v2"; // API oficial
+
+// Instancia del traductor de Google Cloud
+const translate = new Translate();
 
 export async function POST(req: NextRequest) {
   const { filePath, toLang } = await req.json();
@@ -21,13 +25,8 @@ export async function POST(req: NextRequest) {
     const data = await pdfParse(pdfBuffer);
     const originalText = data.text;
 
-    // Traducir el texto
-    const result = await translate(originalText, {
-      tld: "com",
-      to: toLang,
-    });
-
-    const translatedText = result.data[0];
+    // 2. Traducir el texto con la API oficial de Google
+    const [translatedText] = await translate.translate(originalText, toLang);
 
     // Crear nuevo PDF
     const pdfDoc = await PDFDocument.create();
