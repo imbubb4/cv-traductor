@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function HomePage() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadedFilePath, setUploadedFilePath] = useState<string | null>(null);
+  const [translatedUrl, setTranslatedUrl] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,6 +45,7 @@ export default function HomePage() {
     const data = await res.json();
     if (data.translatedUrl) {
       // Abre el nuevo PDF traducido en otra pestaña
+      setTranslatedUrl(data.translatedUrl);
       window.open(data.translatedUrl, "_blank");
     } else {
       alert("Error al traducir el PDF");
@@ -83,6 +85,16 @@ export default function HomePage() {
         >
           Traducir a Inglés y Descargar
         </button>
+      )}
+
+      {translatedUrl && (
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-2">Vista previa del CV traducido</h2>
+          <iframe
+            src={translatedUrl}
+            className="w-full h-[600px] border rounded"
+          ></iframe>
+        </div>
       )}
     </div>
   );
